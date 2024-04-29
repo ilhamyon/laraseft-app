@@ -24,3 +24,9 @@
 .react-pdf__Page__annotations.annotationLayer {
   display: none;
 }
+
+button, [type='button'], [type='reset'], [type='submit'] {
+  -webkit-appearance: button;
+  background-color: rgb(8 47 73);
+  background-image: none;
+}

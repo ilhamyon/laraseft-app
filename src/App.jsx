@@ -10,6 +10,10 @@ import Profile from './pages/Profile'
 import DataUser from './pages/DataUser'
 import Skrining from './pages/Skrining'
 import Latihan from './pages/Latihan'
+import Seft from './pages/Seft'
+import LatihanPernapasan from './pages/LatihanPernapasan'
+import Edukasi from './pages/Edukasi'
+import Evaluasi from './pages/Evaluasi'
 
 function AppContent() {
   const navigate = useLocation();
@@ -27,6 +31,10 @@ function AppContent() {
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/artikel" element={<Artikel />} />
+        <Route path="/seft" element={<Seft />} />
+        <Route path="/latihan-pernapasan" element={<LatihanPernapasan />} />
+        <Route path="/edukasi-kesehatan" element={<Edukasi />} />
+        <Route path="/evaluasi" element={<Evaluasi />} />
         <Route path="/latihan" element={<Latihan />} />
         <Route path="/video" element={<Video />} />
         <Route path="/kesehatan" element={<Kesehatan />} />

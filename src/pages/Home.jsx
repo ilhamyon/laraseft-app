@@ -401,111 +401,48 @@ function Home() {
           <hp className="text-lg px-4">{laraseftUser}</hp>
         </div>
 
-        <div className="px-4 mt-10">
-          <div className="border-2 border-sky-950 py-4 rounded-2xl">
-            <h3 className="text-center text-xl">Interval Walking Therapi Mode</h3>
-            <div className="p-4">
-              <div>
-                <div className="flex gap-4 justify-center">
-                  <Select size="large" placeholder="Pilih Mode" onChange={handleModeChange} style={{ width: 200, marginBottom: 16 }}>
-                    <Option value="15">15 Menit</Option>
-                    <Option value="20">20 Menit</Option>
-                    <Option value="30">30 Menit</Option>
-                    <Option value="45">45 Menit</Option>
-                    <Option value="60">60 Menit</Option>
-                  </Select>
-                  <Button size="large" className="bg-sky-950 text-white" onClick={handleStartStop} disabled={!selectedMode}>
-                    {isRunning ? 'Stop' : 'Mulai'}
-                  </Button>
-                </div>
-                <div className="mt-5 text-center text-lg">
-                  <h2>Mode: {selectedMode} Menit</h2>
-                  <h2>Time: {Math.floor(time / 60)}:{(time % 60).toString().padStart(2, '0')}</h2>
-                  {instruction && <p className="font-bold text-center mt-6">{`"${instruction}..."`}</p>}
-
-                  {showButton && (
-                    <Button onClick={handleSubmit} className="mt-6 bg-sky-950 text-white" size="large">
-                      Saya sudah melakukan latihan
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-4 grid grid-cols-2 gap-14 py-16">
-          {dataSourceTK[0]?.sistole && (
-            <div className="flex flex-col justify-center text-center items-center">
-              <div className={`w-28 h-28 rounded-full flex flex-col justify-center items-center text-white text-2xl font-bold ${kategoriTekananDarah === 'Rendah' ? 'bg-yellow-500' : kategoriTekananDarah === 'Normal' ? 'bg-green-500' : 'bg-red-500'}`}>
-                {dataSourceTK[0]?.sistole}<br/>
-                <span className="text-sm font-light">{kategoriTekananDarah}</span>
-              </div>
-              <p>Sistole</p>
-              {kategoriTekananDarah === 'Tinggi' && <Button onClick={() => handleOpenModal("SistoleTinggi")} className="absolute mt-44">Anjuran</Button>}
-              {kategoriTekananDarah === 'Rendah' && <Button onClick={() => handleOpenModal("SistoleRendah")} className="absolute mt-44">Anjuran</Button>}
-              {kategoriTekananDarah === 'Normal' && <Button onClick={() => handleOpenModal("SistoleNormal")} className="absolute mt-44">Anjuran</Button>}
-            </div>
-          )}
-
-          {dataSourceTK[0]?.diastole && (
-            <div className="flex flex-col justify-center text-center items-center">
-              <div className={`w-28 h-28 rounded-full flex flex-col justify-center items-center text-white text-2xl font-bold ${kategoriTekananDarahDiastolik === 'Rendah' ? 'bg-yellow-500' : kategoriTekananDarahDiastolik === 'Normal' ? 'bg-green-500' : 'bg-red-500'}`}>
-                {dataSourceTK[0]?.diastole}<br/>
-                <span className="text-sm font-light">{kategoriTekananDarahDiastolik}</span>
-              </div>
-              <p>Diastole</p>
-              {kategoriTekananDarahDiastolik === 'Tinggi' && <Button onClick={() => handleOpenModal("DiastoleTinggi")} className="absolute mt-44">Anjuran</Button>}
-              {kategoriTekananDarahDiastolik === 'Rendah' && <Button onClick={() => handleOpenModal("DiastoleRendah")} className="absolute mt-44">Anjuran</Button>}
-              {kategoriTekananDarahDiastolik === 'Normal' && <Button onClick={() => handleOpenModal("DiastoleNormal")} className="absolute mt-44">Anjuran</Button>}
-            </div>
-          )}
-
-          {dataSourceGD[0]?.guladarah && (
-            <div className="flex flex-col justify-center text-center items-center">
-              <div className={`w-28 h-28 rounded-full flex flex-col justify-center items-center text-white text-2xl font-bold ${kategoriGulaDarah === 'Rendah' ? 'bg-yellow-500' : kategoriGulaDarah === 'Normal' ? 'bg-green-500' : 'bg-red-500'}`}>
-                {dataSourceGD[0]?.guladarah}<br/>
-                <span className="text-sm font-light">{kategoriGulaDarah}</span>
-              </div>
-              <p>Gula Darah</p>
-              {kategoriGulaDarah === 'Tinggi' && <Button onClick={() => handleOpenModal("GDTinggi")} className="absolute mt-44">Anjuran</Button>}
-              {kategoriGulaDarah === 'Rendah' && <Button onClick={() => handleOpenModal("GDRendah")} className="absolute mt-44">Anjuran</Button>}
-              {kategoriGulaDarah === 'Normal' && <Button onClick={() => handleOpenModal("GDNormal")} className="absolute mt-44">Anjuran</Button>}
-            </div>
-          )}
-
-          {dataSourceIMT[0]?.tb && (
-            <div className="flex flex-col justify-center text-center items-center">
-              <div className={`w-28 h-28 rounded-full flex flex-col justify-center items-center text-white text-2xl font-bold ${kategoriIMT === 'Sangat kurus' || kategoriIMT === 'Kurus'  ? 'bg-yellow-500' : kategoriIMT === 'Normal' ? 'bg-green-500' : 'bg-red-500'}`}>
-                {iMTBulat}<br/>
-                <span className="text-sm font-light">{kategoriIMT}</span>
-              </div>
-              <p>IMT</p>
-                {(kategoriIMT === 'Obesitas' || kategoriIMT === 'Overweight') && <Button onClick={() => handleOpenModal("IMTObesitas")} className="absolute mt-44">Anjuran</Button>}
-                {(kategoriIMT === 'Kurus' || kategoriIMT === 'Sangat kurus') && <Button onClick={() => handleOpenModal("IMTKurus")} className="absolute mt-44">Anjuran</Button>}
-                {kategoriIMT === 'Normal'  && <Button onClick={() => handleOpenModal("IMTNormal")} className="absolute mt-44">Anjuran</Button>}
-            </div>
-          )}
-        </div>
-
-        <h2 className="px-4 text-xl font-semibold">Informasi Kesehatan</h2>
-        <div className="grid grid-cols-3 p-4 gap-3 mb-20">
+        {/* <h2 className="px-4 text-xl font-semibold mt-10">Informasi Kesehatan</h2> */}
+        <div className="grid grid-cols-2 p-4 gap-10 mb-20 mt-20">
           <div className="flex flex-col justify-center text-center items-center">
-            <Link to="/video">
+            <Link to="/skrining" className="flex flex-col justify-center text-center items-center">
               <img className="rounded-2xl w-28 h-28 object-cover" src="https://media.istockphoto.com/id/1359055641/id/video/rekan-dokter-di-rumah-sakit-mendiskusikan-kasus-saat-berjalan-di-koridor-rumah-sakit.jpg?s=640x640&k=20&c=Nj6IAu2Yu6R4OPfEpkYFvuprz0QiiYWM3a-r225uOA0=" />
-              <p className="text-center">Video<br/> &nbsp;</p>
+              <div className="text-center">Skrining</div>
             </Link>
           </div>
           <div className="flex flex-col justify-center text-center items-center">
-            <Link to="/artikel">
-              <img className="rounded-2xl w-28 h-28 object-cover" src="https://blogs.insanmedika.co.id/wp-content/uploads/2020/05/Tugas-Perawat.jpg" />
-              <p className="text-center">Artikel<br/> &nbsp;</p>
+            <Link to="/edukasi-kesehatan" className="flex flex-col justify-center text-center items-center">
+              <img className="rounded-2xl w-28 h-28 object-cover" src="https://content.gallup.com/origin/gallupinc/GallupSpaces/Production/Cms/WORKPLACEV9CMS/atqvq8thw0kw3kj1kc_tfa.jpg" />
+              <div className="text-center">Edukasi Kesehatan</div>
             </Link>
           </div>
           <div className="flex flex-col justify-center text-center items-center">
-            <a href="https://wa.me/6285326698776?text=Hi%2C%20Saya%20ingin%20konsultasi" target="_blank">
+            <Link to="/latihan-pernapasan" className="flex flex-col justify-center text-center items-center">
+              <img className="rounded-2xl w-28 h-28 object-cover" src="https://cdn0-production-images-kly.akamaized.net/MdGT7J3Lt9lxUzuDVqusgpMLifc=/0x192:1880x1251/800x450/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3339771/original/085161800_1609745425-pexels-photo-4498220.jpeg" />
+              <div className="text-center">Latihan Pernapasan</div>
+            </Link>
+          </div>
+          <div className="flex flex-col justify-center text-center items-center">
+            <Link to="/seft" className="flex flex-col justify-center text-center items-center">
+              <img className="rounded-2xl w-28 h-28 object-cover" src="https://awsimages.detik.net.id/community/media/visual/2016/05/20/a622d1e0-e318-4abe-bc7d-c52c97bba4f4_169.jpg?w=600&q=90" />
+              <div className="text-center">Seft</div>
+            </Link>
+          </div>
+          <div className="flex flex-col justify-center text-center items-center">
+            <Link to="/latihan" className="flex flex-col justify-center text-center items-center">
+              <img className="rounded-2xl w-28 h-28 object-cover" src="https://ae01.alicdn.com/kf/S5064058da054404fb8017948ac2d00a01/Pengukur-waktu-dapur-Stopwatch-belajar-tampilan-LED-Digital-besar-Timer-kue-untuk-memasak-alat-Alarm-latihan.jpg" />
+              <div className="text-center">Alarm</div>
+            </Link>
+          </div>
+          <div className="flex flex-col justify-center text-center items-center">
+            <Link to="/evaluasi" className="flex flex-col justify-center text-center items-center">
+              <img className="rounded-2xl w-28 h-28 object-cover" src="https://www.fastmed.com/wp-content/uploads/2021/07/doctor_with_clipboard-857x571-1.jpg" />
+              <div className="text-center">Evaluasi</div>
+            </Link>
+          </div>
+          <div className="flex flex-col justify-center text-center items-center">
+            <a href="https://wa.me/6285266393556?text=Hi%2C%20Saya%20ingin%20konsultasi" className="flex flex-col justify-center text-center items-center">
               <img className="rounded-2xl w-28 h-28 object-cover" src="https://awsimages.detik.net.id/community/media/visual/2020/05/05/c7f69650-d103-46d4-992c-d5e876968a6e.jpeg?w=600&q=90" />
-              <p className="text-center">Hubungi Perawat</p>
+              <div className="text-center">Konsultasi</div>
             </a>
           </div>
         </div>
