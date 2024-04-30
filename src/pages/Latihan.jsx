@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../utils/auth";
 import { Button, Table, TimePicker, message, notification } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import { sanityClient } from "../lib/sanity/getClient";
+import Alarm from "../assets/alarmlatihan.mp3"
 
 const columns = [
   {
@@ -284,20 +285,36 @@ function Latihan() {
     };
 
     const [alarmTime, setAlarmTime] = useState(null);
+    const AlarmAudio = new Audio(`${Alarm}`);
+    const storedAlarmTime = localStorage.getItem('alarmTime');
 
-    const handleTimeChange = (time) => {
-      setAlarmTime(time);
-      localStorage.setItem('alarmTime', time);
+    useEffect(() => {
+      const storedAlarmTime = localStorage.getItem('alarmTime');
+      if (storedAlarmTime) {
+        setAlarmTime(new Date(storedAlarmTime));
+      }
+    }, []);
+
+    const handleTimeChange = (time, timeString) => {
+      const jakartaTime = moment.tz(timeString, 'HH:mm', 'Asia/Jakarta').toDate();
+      setAlarmTime(jakartaTime);
+      // localStorage.setItem('alarmTime', jakartaTime);
     };
   
     const setAlarm = () => {
-      const currentTime = new Date();
-      const selectedTime = alarmTime ? alarmTime.toDate() : null;
-  
-      if (selectedTime && selectedTime > currentTime) {
-        const timeDifference = selectedTime.getTime() - currentTime.getTime();
+      const currentTime = moment();
+      const selectedTime = alarmTime ? moment(alarmTime) : null;
+      localStorage.setItem('alarmTime', selectedTime);
+    
+      if (selectedTime && selectedTime.isAfter(currentTime)) {
+        const timeDifference = selectedTime.diff(currentTime);
+        notification.success({
+          message: 'Set Alarm',
+          description: 'Set alarm has been successfully.',
+        });
         setTimeout(() => {
           showNotification();
+          AlarmAudio.play();
         }, timeDifference);
       } else {
         notification.error({
@@ -326,6 +343,15 @@ function Latihan() {
         console.log("Notification permission denied");
       }
     };
+
+    const handleUpdateAlarm = () => {
+      localStorage.removeItem('alarmTime'); // Hapus waktu alarm dari localStorage
+      setAlarmTime(null); // Setel alarmTime kembali ke null
+      notification.success({
+        message: 'Alarm Removed',
+        description: 'Alarm has been removed.',
+      });
+    };
     return (
       <div>
           <div className="my-0 mx-auto min-h-full max-w-screen-sm bg-white">
@@ -337,7 +363,7 @@ function Latihan() {
                 <h1>Set Alarm</h1>
                 <div className="flex gap-4">
                   <TimePicker
-                    value={alarmTime}
+                    value={alarmTime ? moment(alarmTime) : null}
                     onChange={handleTimeChange}
                     format="HH:mm"
                     style={{ marginBottom: '20px' }}
@@ -345,9 +371,18 @@ function Latihan() {
                       className: 'custom-time-picker',
                     }}
                   />
-                  <Button className="bg-gray-200 text-white" onClick={setAlarm}>
-                    Set Alarm
-                  </Button>
+                  {/* <Button className="bg-gray-200 text-white" onClick={setAlarm}>
+                    {storedAlarmTime ? 'Update' : 'Set Alarm'}
+                  </Button> */}
+                  {storedAlarmTime ? (
+                    <Button className="bg-gray-200 text-white" onClick={handleUpdateAlarm}>
+                      Update
+                    </Button>
+                  ) : (
+                    <Button className="bg-gray-200 text-white" onClick={setAlarm}>
+                      Set Alarm
+                    </Button>
+                  )}
                 </div>
               </div>
 

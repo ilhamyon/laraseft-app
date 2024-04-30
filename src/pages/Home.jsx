@@ -380,17 +380,45 @@ function Home() {
     }
   };
 
-  const [visible, setVisible] = useState(false);
-  const [modalContentId, setModalContentId] = useState(null);
+  // const [visible, setVisible] = useState(false);
+  // const [modalContentId, setModalContentId] = useState(null);
 
-  const handleOpenModal = (id) => {
-    setModalContentId(id);
-    setVisible(true);
+  // const handleOpenModal = (id) => {
+  //   setModalContentId(id);
+  //   setVisible(true);
+  // };
+
+  // const handleCloseModal = () => {
+  //   setVisible(false);
+  //   setModalContentId(null); // Reset modal content id when modal is closed
+  // };
+
+  // useEffect(() => {
+  //   if (Notification.permission !== 'granted') {
+  //     Notification.requestPermission();
+  //   }
+  // }, []);
+
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    // Periksa izin notifikasi saat komponen dimuat
+    if (Notification.permission !== 'granted') {
+      setVisible(true); // Tampilkan modal jika izin belum diberikan
+    }
+  }, []);
+
+  const handleOk = () => {
+    // Meminta izin notifikasi saat pengguna menyetujui modal
+    if (Notification.permission !== 'granted') {
+      Notification.requestPermission();
+    }
+    setVisible(false);
   };
 
-  const handleCloseModal = () => {
+  const handleCancel = () => {
+    // Menutup modal tanpa meminta izin notifikasi
     setVisible(false);
-    setModalContentId(null); // Reset modal content id when modal is closed
   };
   
   return (
@@ -448,123 +476,20 @@ function Home() {
         </div>
         </section>
         <Modal
-          title=""
+          title="Allow Notifications"
           visible={visible}
-          onCancel={handleCloseModal}
+          onOk={handleOk}
+          onCancel={handleCancel}
           footer={[
-            <Button key="cancel" onClick={handleCloseModal}>
-              Tutup
-            </Button>
+            <Button type="primary" key="cancel" onClick={handleCancel}>
+              Cancel
+            </Button>,
+            <Button key="ok" type="primary" onClick={handleOk}>
+              Allow
+            </Button>,
           ]}
         >
-          <div className="mt-6">
-            {modalContentId === "IMTNormal" &&
-              <div>
-                <ul className="list-disc px-6">
-                  <li>Bagus!</li>
-                  <li>Pertahankan berat badan ideal dengan makan sehat dengan gizi seimbang</li>
-                  <li>Rutin berolahraga minimal 30 menit sehari, 5 kali dalam seminggu</li>
-                  <li>Hindari makanan manis, asin, dan berlemak</li>
-                </ul>
-              </div>
-            }
-
-            {modalContentId === "IMTKurus" &&
-              <div>
-                <ul className="list-disc px-6">
-                  <li>Tingkatkan asupan kalori dengan makanan tinggi protein, lemak sehat, karbohidrat kompleks</li>
-                  <li>Tetap Olahraga</li>
-                  <li>Konsultasikan ke Dokter jika ada penurunan berat badan secara drastis</li>
-                </ul>
-              </div>
-            }
-
-            {modalContentId === "IMTObesitas" &&
-              <div>
-                <ul className="list-disc px-6">
-                  <li>Hati-hati!</li>
-                  <li>Tetap konsumsi makanan sehat dengan gizi seimbang</li>
-                  <li>Kurangi dan hindari makanan yang mengandung tinggi gula, garam dan lemak</li>
-                  <li>Konsultasikan ke Dokter dan Ahli Gizi jika ingin memulai program menurunkan berat badan</li>
-                  <li>Lakukan aktivitas olahraga secara rutin minimal 30 menit dalam sehari. 5 kali dalam seminggu</li>
-                  <li>Tingkatkan aktivitas fisik harian dengan lebih banyak gerak dan berjalan kaki</li>
-                  <li>Hindari terlalu lama duduk atau rebahan di luar jam tidur/ jam istirahat</li>
-                </ul>
-              </div>
-            }
-
-            {modalContentId === "GDRendah" &&
-              <div>
-                <ul className="list-disc px-6">
-                  <li>Segera konsumsi makanan & minuman mengandung karbohidrat</li>
-                  <li>Pantau selalu kadar gula darah</li>
-                  <li>Segera berkonsultasi dengan dokter jika kondisinya semakin parah</li>
-                </ul>
-              </div>
-            }
-
-            {modalContentId === "GDNormal" &&
-              <div>
-                <ul className="list-disc px-6">
-                  <li>Bagus sekali, Pertahankan!</li>
-                  <li>Tetap menjaga pola makan sehat dan seimbang</li>
-                  <li>Rutin berolahraga minimal 30 menit sehari selama 5 kali dalam seminggu</li>
-                  <li>Hindari rokok dan alkohol</li>
-                  <li>Tetap minum obat secara teratur</li>
-                </ul>
-              </div>
-            }
-
-            {modalContentId === "GDTinggi" &&
-              <div>
-                <ul className="list-disc px-6">
-                  <li>Waspada!</li>
-                  <li>Batasi konsumsi makanan berkarbohidrat dan hindari makanan/minuman tinggi gula</li>
-                  <li>Pantau gula darah secara teratur</li>
-                  <li>Istirahat yang cukup</li>
-                  <li>Teratur minum obat</li>
-                  <li>Konsultasikan ke dokter jika mengalami sakit kepala, pusing, dan mual</li>
-                  <li>Rujuk segera bila pingsan tiba-tiba</li>
-                </ul>
-              </div>
-            }
-
-            {(modalContentId === "SistoleRendah" || modalContentId === "DiastoleRendah") &&
-              <div>
-                <ul className="list-disc px-6">
-                  <li>Segera berkonsultasi dengan dokter jika mengalami gejala kepala pusing, dan lemas</li>
-                  <li>Jangan berdiri secara tiba-tiba</li>
-                  <li>Jaga pola makan sehat dengan gizi seimbang</li>
-                  <li>Istirahat yang cukup</li>
-                  <li>Minum air putih yang cukup</li>
-                  <li>Hindari kopi dan alkohol</li>
-                </ul>
-              </div>
-            }
-
-            {(modalContentId === "SistoleNormal" || modalContentId === "DiastoleNormal") &&
-              <div>
-                <ul className="list-disc px-6">
-                  <li>Bagus! Pertahankan</li>
-                  <li>Tetap menjaga pola makan sehat</li>
-                  <li>Hindari hindari makanan tinggi gula, garam dan lemak</li>
-                </ul>
-              </div>
-            }
-
-            {(modalContentId === "SistoleTinggi" || modalContentId === "DiastoleTinggi") &&
-              <div>
-                <ul className="list-disc px-6">
-                  <li>Hati-hati!!</li>
-                  <li>Minum obat sesuai petunjuk secara teratur</li>
-                  <li>Konsumsi makanan rendah garam, lemak, dan gula</li>
-                  <li>Istirahat cukup</li>
-                  <li>Lakukan relaksasi</li>
-                  <li>Waspada, segera ke Dokter jika mengalami gejala sakit kepala berat, mimisan, sesak napas, dan nyeri dada</li>
-                </ul>
-              </div>
-            }
-          </div>
+          <p>Do you want to allow notifications?</p>
         </Modal>
     </>
   )
