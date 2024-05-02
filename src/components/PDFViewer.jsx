@@ -22,10 +22,10 @@ const PDFViewer = ({ file, scale }) => {
       </p>
       <div className="flex justify-center space-x-2 mt-2">
         {pageNumber > 1 && (
-          <Button onClick={() => setPageNumber(pageNumber - 1)}>Previous</Button>
+          <Button className='text-white' onClick={() => setPageNumber(pageNumber - 1)}>Previous</Button>
         )}
         {pageNumber < numPages && (
-          <Button onClick={() => setPageNumber(pageNumber + 1)}>Next</Button>
+          <Button className='text-white' onClick={() => setPageNumber(pageNumber + 1)}>Next</Button>
         )}
       </div>
     </div>

@@ -17,8 +17,15 @@ function Seft() {
 
         <div className="py-4 border-b-2 border-gray-400">
           <h2 className="px-4 font-semibold text-xl mb-4">Spiritual Emotional Breathing (SEB)</h2>
-          <div className="flex justify-center mb-20">
+          <div className="flex justify-center mb-2">
             <PDFViewer file={seft} scale={0.45} />
+          </div>
+        </div>
+
+        <div className="py-4 border-b-2 border-gray-400">
+          <h2 className="px-4 font-semibold text-xl mb-4">Video</h2>
+          <div className="flex px-4 justify-center mb-20">
+            <iframe width="750" height="342" src="https://www.youtube.com/embed/B0w4ueoLuFI?rel=0" frameBorder="0" allowfullscreen></iframe>
           </div>
         </div>
 
